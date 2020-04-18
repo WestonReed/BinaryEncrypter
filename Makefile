@@ -16,4 +16,4 @@ hello:
 	cc hello.c -o hello
 
 clean:
-	rm -rf hello encrypted encrypted.h
+	rm -rf hello encrypted encrypted.h binary
