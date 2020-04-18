@@ -1,4 +1,5 @@
 SHELL = bash
+KEY = PASSWORD
 
 all: encrypted.h load.cpp
 	g++ load.cpp -o binary
@@ -6,11 +7,10 @@ all: encrypted.h load.cpp
 encrypted.h: encrypted
 	@echo -n "char binary[] = \"echo " > encrypted.h
 	cat encrypted >> encrypted.h
-	echo " | base64 --decode > decrypted && chmod +x decrypted\";" >> encrypted.h
+	echo " | openssl enc -d -aes-256-cbc -md sha1 -k $(KEY) -base64 -A > decrypted && chmod +x decrypted\";" >> encrypted.h
 
 encrypted: hello
-	base64 hello > encrypted
-	truncate -s -1 encrypted
+	openssl enc -aes-256-cbc -in hello -md sha1 -k $(KEY) -base64 -A > encrypted
 
 hello:
 	cc hello.c -o hello
